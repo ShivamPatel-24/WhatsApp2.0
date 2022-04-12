@@ -36,7 +36,7 @@ function Sidebar(props) {
     return (
         <Container>
             <Header>
-                <UserAvatar onClick= {() => auth.signOut() }/>
+                <UserAvatar src={user.photoURL} onClick= {() => auth.signOut() }/>
                     <IconContainer>
                         <IconButton>
                             <ChatIcon />
@@ -56,7 +56,7 @@ function Sidebar(props) {
             <SearchbarButton onClick={createChat}>Start a new chat</SearchbarButton>
 
             {chatSnapshot?.docs.map(chat => (
-                <Chat id={chat.id} key={chat.id} user={chat.data().users}/>
+                <Chat id={chat.id} key={chat.id} users={chat.data().users}/>
             ))}
         </Container>
     );
@@ -92,7 +92,7 @@ const IconContainer = styled.div``;
 const Search = styled.div`
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     border-radius: 2px;
 `;
 
@@ -100,12 +100,12 @@ const SearchInput = styled.input`
     flex: 1;
     border: none;
     outline-width: 0;
-    font-size: 20px;
+    font-size: 15px;
 `;
 
 const SearchbarButton = styled(Button)`
     width: 100%;
-    font-Size: 20px;
+    font-Size: 15px;
     
     &&&{
         border-top: 1px solid whitesmoke;

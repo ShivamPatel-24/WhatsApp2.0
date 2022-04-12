@@ -1,12 +1,29 @@
 import {Avatar } from '@material-ui/core/'
 import styled from 'styled-components';
+import getReceipentEmail from '../utils/getReceiptEmail';
+import { auth, db } from '../Firebase'
+import {useAuthState} from "react-firebase-hooks/auth";
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 
-function Chat({ id, user}) {
+function Chat({ id, users}) {
+
+    const [user] = useAuthState(auth);
+
+    const [recipientSnapshot] = useCollection(
+        db.collection("users").where('email', '==', getReceipentEmail(users, user))
+    )
+
+    const recipient = recipientSnapshot?.docs?.[0]?.data();
+    const recipientEmail = getReceipentEmail(users, user);
+
     return (
         <Container>
-            <UserAvatar />
-            <p>Recipient's email</p>
+            {recipient ? 
+                <UserAvatar src={recipient?.photoURL}/> :
+               (<UserAvatar>{recipientEmail[0]}</UserAvatar>)
+            } 
+            <p>{recipientEmail}</p>
         </Container>
     );
 }
